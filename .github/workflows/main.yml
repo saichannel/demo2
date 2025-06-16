@@ -48,8 +48,11 @@ jobs:
     - name: Deploy to prod
       run: |
         mvn deploy --settings .settings/org.eclipse.core.resources.prefs -DskipMunitTests -DmuleDeploy \
-        -Duser="${{ secrets.USER }}" \
-        -Dpass="${{ secrets.PASS }}" \
+        -Danypoint.username="${{ secrets.USER }}" \
+        -Danypoint.password="${{ secrets.PASS }}" \
+        -Danypoint.businessGroup="${{ secrets.ANYPOINT_ORG_ID }}" \
         -Denv="${{ secrets.ENV }}" \
-        -DappName="${{ secrets.APP_NAME }}" \
+        -Dappname="${{ secrets.APP_NAME }}" \
+        -Danypoint.platform.client_id="${{ secrets.ENV_CLIENT_ID }}" \
+        -Danypoint.platform.client_secret="${{ secrets.ENV_CLIENT_SECRET }}"
          
