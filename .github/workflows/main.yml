@@ -52,9 +52,9 @@ jobs:
         mvn deploy --settings .settings/org.eclipse.core.resources.prefs -DskipMunitTests -DmuleDeploy \
         -Danypoint.username="${{ secrets.USER }}" \
         -Danypoint.password="${{ secrets.PASS }}" \
-        -Danypoint.businessGroup=a62f6236-0b02-4e5f-a8eb-dc5e37aedb12 \
+        -Danypoint.businessGroup="${{ secrets.ANYPOINT_ORG_ID }}" \
         -Denv="${{ secrets.ENV }}" \
         -Dappname="${{ secrets.APP_NAME }}" \
-        -Danypoint.platform.client_id=b5b72434253f480c8405d9cb8d853fed \
-        -Danypoint.platform.client_secret=d7d4Ff82Be8f49949661Ffd3ED535D46
+        -Danypoint.platform.client_id="${{ secrets.ENV_CLIENT_ID }}" \
+        -Danypoint.platform.client_secret="${{ secrets.ENV_CLIENT_SECRET }}"
   
