@@ -1,0 +1,126 @@
+name: Release Tag Deployment for MuleSoft Application
+
+on:
+  push:
+    tags:
+      - 'v*'        # For tags like v1.0.0, v2.1.3
+      - 'uat-*'     # For tags like uat-1.0.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: 17
+
+      - name: Build JAR
+        run: mvn clean package -DmuleDeploy
+
+      # - name: Publish to Exchange
+      #   run: |
+      #     mvn deploy --settings .settings/org.eclipse.core.resources.prefs -DskipMunitTests \
+      #     -Danypoint.username="${{ secrets.USER }}" \
+      #     -Danypoint.password="${{ secrets.PASS }}" 
+
+  deployuat:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: uat
+    steps:    
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Deploy to UAT
+        run: |
+          mvn deploy --settings .settings/org.eclipse.core.resources.prefs -DskipMunitTests -DmuleDeploy \
+          -Danypoint.username="${{ secrets.USER }}" \
+          -Danypoint.password="${{ secrets.PASS }}" \
+          -Danypoint.businessGroup="${{ secrets.ANYPOINT_ORG_ID }}" \
+          -Denv="${{ secrets.ENV }}" \
+          -Dappname="${{ secrets.APP_NAME }}" \
+          -Danypoint.platform.client_id="${{ secrets.ENV_CLIENT_ID }}" \
+          -Danypoint.platform.client_secret="${{ secrets.ENV_CLIENT_SECRET }}"
+
+
+# name: Reusable Workflow To Deploy MuleSoft Application
+ 
+# on:
+#  push:
+#   branches: [ UAT ]
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout this repo
+#         uses: actions/checkout@v4
+
+#       - name: Cache dependencies
+#         uses: actions/cache@v4
+#         with:
+#           path: ~/.m2/repository
+#           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+#           restore-keys: ${{ runner.os }}-maven-
+
+#       - name: Set up JDK 17
+#         uses: actions/setup-java@v4
+#         with:
+#           distribution: "zulu"
+#           java-version: 17
+#       - name: Build JAR
+#         run: mvn clean package -DmuleDeploy
+#       - name: Publish to Exchange
+#         run: |
+#           mvn deploy --settings .settings/org.eclipse.core.resources.prefs -DskipMunitTests \
+#           -Danypoint.username="${{ secrets.USER }}" \
+#           -Danypoint.password="${{ secrets.PASS }}" 
+
+        
+         
+#   deployuat:
+#     needs: build
+#     runs-on: ubuntu-latest
+#     environment: uat
+#     steps:    
+#     - name: Checkout this repo
+#       uses: actions/checkout@v4
+#     - name: Cache dependencies
+#       uses: actions/cache@v4
+#       with:
+#         path: ~/.m2/repository
+#         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+#         restore-keys: |
+#           ${{ runner.os }}-maven-
+#     - name: Deploy to uat
+#       run: |
+#         mvn deploy --settings .settings/org.eclipse.core.resources.prefs -DskipMunitTests -DmuleDeploy \
+#         -Danypoint.username="${{ secrets.USER }}" \
+#         -Danypoint.password="${{ secrets.PASS }}" \
+#         -Danypoint.businessGroup="${{ secrets.ANYPOINT_ORG_ID }}" \
+#         -Denv="${{ secrets.ENV }}" \
+#         -Dappname="${{ secrets.APP_NAME }}" \
+#         -Danypoint.platform.client_id="${{ secrets.ENV_CLIENT_ID }}" \
+#         -Danypoint.platform.client_secret="${{ secrets.ENV_CLIENT_SECRET }}"
+  
