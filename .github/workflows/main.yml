@@ -29,11 +29,11 @@ jobs:
       - name: Build JAR
         run: mvn clean package -DmuleDeploy
 
-      # - name: Publish to Exchange
-      #   run: |
-      #     mvn deploy --settings .settings/org.eclipse.core.resources.prefs -DskipMunitTests \
-      #     -Danypoint.username="${{ secrets.USER }}" \
-      #     -Danypoint.password="${{ secrets.PASS }}" 
+      - name: Publish to Exchange
+        run: |
+          mvn deploy --settings .settings/org.eclipse.core.resources.prefs -DskipMunitTests \
+          -Danypoint.username="${{ secrets.USER }}" \
+          -Danypoint.password="${{ secrets.PASS }}" 
 
   deployuat:
     needs: build
