@@ -2,7 +2,7 @@ name: Reusable Workflow To Deploy MuleSoft Application
  
 on:
  push:
-  branches: [ feature-branch ]
+  branches: [ feature-branc ]
 
 jobs:
   build:
@@ -23,11 +23,7 @@ jobs:
         with:
           distribution: "zulu"
           java-version: 17
-      - name: Rollback to previous version
-        run: |
-          git checkout feature-branch  
-          git reset --hard HEAD~1
-          git push origin feature-branch --force  
+          
       - name: Build JAR
         run: mvn clean package -DmuleDeploy
       - name: Publish to Exchange
@@ -62,7 +58,22 @@ jobs:
         -Dappname="${{ secrets.APP_NAME }}" \
         -Danypoint.platform.client_id=777df98bcd084a75bfe4b973a9e53516 \
         -Danypoint.platform.client_secret=AF10d59Ee8C64EFb85BCc8474b2aA7eD
-        
+    - name: Rollback to previous version
+      if: failure()
+      run: |
+        echo "Deployment to dev failed, rolling back..."
+        git checkout feature-branch  
+        git reset --hard HEAD~1
+        git push origin feature-branch --force
+    - name: Create tag for stable deploy
+      if: success()
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git tag -a "v1.0.${{ secrets.run-number }}" -m "Stable deploy"
+        git push origin --tags
+
+      
          
   deployuat:
     needs: deploydev
