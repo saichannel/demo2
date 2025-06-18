@@ -57,8 +57,8 @@ jobs:
         -Denv="${{ secrets.ENV }}" \
         -Dappname="${{ secrets.APP_NAME }}" \
         -Danypoint.platform.client_id=777df98bcd084a75bfe4b973a9e53516 \
-        -Danypoint.platform.client_secret=AF10d59Ee8C64EFb85BCc8474b2aA7eD \
-        false
+        -Danypoint.platform.client_secret=AF10d59Ee8C64EFb85BCc8474b2aA7eD 
+        
         
         
     - name: Rollback to previous version (Dev)
