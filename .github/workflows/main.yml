@@ -70,7 +70,7 @@ jobs:
       run: |
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
-        git tag -a "v1.0.${{ secrets.run-number }}" -m "Stable deploy"
+        git tag -a "v1.0.${{ secrets.RUN_NUMBER }}" -m "Stable deploy"
         git push origin --tags
 
       
@@ -99,6 +99,20 @@ jobs:
         -Dappname="${{ secrets.APP_NAME }}" \
         -Danypoint.platform.client_id=b5b72434253f480c8405d9cb8d853fed \
         -Danypoint.platform.client_secret=d7d4Ff82Be8f49949661Ffd3ED535D46
+    - name: Rollback to previous version
+      if: failure()
+      run: |
+        echo "Deployment to dev failed, rolling back..."
+        git checkout feature-branch  
+        git reset --hard HEAD~1
+        git push origin feature-branch --force
+    - name: Create tag for stable deploy
+      if: success()
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git tag -a "v1.0.${{ secrets.RUN_NUMBER }}" -m "Stable deploy"
+        git push origin --tags
   
   # deployprod:
   #   needs: deployuat
