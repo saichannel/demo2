@@ -62,7 +62,7 @@ jobs:
       if: failure()
       run: |
         echo "Deployment to DEV failed. Rolling back last commit..."
-        git config user.name "saichannel"
+        git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git checkout feature-branch
         git reset --hard HEAD~1
