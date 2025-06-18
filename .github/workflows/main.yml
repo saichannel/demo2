@@ -58,6 +58,7 @@ jobs:
         -Dappname="${{ secrets.APP_NAME }}" \
         -Danypoint.platform.client_id=777df98bcd084a75bfe4b973a9e53516 \
         -Danypoint.platform.client_secret=AF10d59Ee8C64EFb85BCc8474b2aA7eD
+        
     - name: Rollback to previous version (Dev)
       if: failure()
       run: |
@@ -103,7 +104,8 @@ jobs:
         -Dappname="${{ secrets.APP_NAME }}" \
         -Danypoint.platform.client_id=b5b72434253f480c8405d9cb8d853fed \
         -Danypoint.platform.client_secret=d7d4Ff82Be8f49949661Ffd3ED535D46
-    - name: Rollback to previous version (Dev)
+        
+    - name: Rollback to previous version (UAT)
       if: failure()
       run: |
         echo "Deployment to DEV failed. Rolling back last commit..."
@@ -113,7 +115,7 @@ jobs:
         git reset --hard HEAD~1
         git push origin feature-branch --force
 
-    - name: Create tag for stable deploy (Dev)
+    - name: Create tag for stable deploy (UAT)
       if: success()
       run: |
         git config user.name "GitHub Actions"
