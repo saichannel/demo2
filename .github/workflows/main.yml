@@ -60,7 +60,7 @@ jobs:
         -Danypoint.platform.client_secret=AF10d59Ee8C64EFb85BCc8474b2aA7eD
         
     - name: Rollback to previous version (Dev)
-      if: failure()
+      if: ${{ failure() }}
       run: |
         echo "Deployment to DEV failed. Rolling back last commit..."
         git config user.name "GitHub Actions"
@@ -70,7 +70,7 @@ jobs:
         git push origin feature-branch --force
 
     - name: Create tag for stable deploy (Dev)
-      if: success()
+      if: ${{ success() }}
       run: |
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
@@ -106,7 +106,7 @@ jobs:
         -Danypoint.platform.client_secret=d7d4Ff82Be8f49949661Ffd3ED535D46
         
     - name: Rollback to previous version (UAT)
-      if: failure()
+      if: ${{ failure() }}
       run: |
         echo "Deployment to DEV failed. Rolling back last commit..."
         git config user.name "GitHub Actions"
@@ -116,7 +116,7 @@ jobs:
         git push origin feature-branch --force
 
     - name: Create tag for stable deploy (UAT)
-      if: success()
+      if: ${{ success() }}
       run: |
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
