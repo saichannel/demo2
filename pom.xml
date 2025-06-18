@@ -5,8 +5,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>a62f6236-0b02-4e5f-a8eb-dc5e37aedb12</groupId>
-	<artifactId>demo2-cicd</artifactId>
-	<version>1.0.0</version>
+	<artifactId>demo2</artifactId>
+	<version>1.0.5</version>
 	<packaging>mule-application</packaging>
 
 	<name>demo2</name>
