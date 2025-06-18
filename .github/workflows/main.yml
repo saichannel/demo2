@@ -62,7 +62,7 @@ jobs:
         
         
     - name: Rollback to previous version (Dev)
-      if: ${{ failure() }}
+      if: ${{ steps.deploy_dev.outcome == 'failure' }}
       run: |
         echo "Deployment to DEV failed. Rolling back last commit..."
         git config user.name "GitHub Actions"
@@ -72,7 +72,7 @@ jobs:
         git push origin feature-branch --force
 
     - name: Create tag for stable deploy (Dev)
-      if: ${{ success() }}
+      if: ${{ steps.deploy_dev.outcome == 'success' }}
       run: |
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
@@ -109,7 +109,7 @@ jobs:
         
         
     - name: Rollback to previous version (UAT)
-      if: ${{ failure() }}
+      if: ${{ steps.deploy_dev.outcome == 'failure' }}
       run: |
         echo "Deployment to DEV failed. Rolling back last commit..."
         git config user.name "GitHub Actions"
@@ -119,7 +119,7 @@ jobs:
         git push origin feature-branch --force
 
     - name: Create tag for stable deploy (UAT)
-      if: ${{ success() }}
+      if: ${{ steps.deploy_dev.outcome == 'success' }}
       run: |
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
