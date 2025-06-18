@@ -23,6 +23,11 @@ jobs:
         with:
           distribution: "zulu"
           java-version: 17
+      - name: Rollback to previous version
+        run: |
+          git checkout feature-branch  
+          git reset --hard HEAD~1
+          git push origin feature-branch --force  
       - name: Build JAR
         run: mvn clean package -DmuleDeploy
       - name: Publish to Exchange
