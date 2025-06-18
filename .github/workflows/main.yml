@@ -49,6 +49,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-maven-       
     - name: Deploy to dev
+      continue-on-error: true
       run: |
         mvn deploy --settings .settings/org.eclipse.core.resources.prefs -DskipMunitTests -DmuleDeploy \
         -Danypoint.username="${{ secrets.USER }}" \
@@ -57,10 +58,8 @@ jobs:
         -Denv="${{ secrets.ENV }}" \
         -Dappname="${{ secrets.APP_NAME }}" \
         -Danypoint.platform.client_id=777df98bcd084a75bfe4b973a9e53516 \
-        -Danypoint.platform.client_secret=AF10d59Ee8C64EFb85BCc8474b2aA7eD 
-        
-        
-        
+        -Danypoint.platform.client_secret=AF10d59Ee8C64EFb85BCc8474b2aA7eD
+
     - name: Rollback to previous version (Dev)
       if: ${{ steps.deploy_dev.outcome == 'failure' }}
       run: |
