@@ -58,20 +58,24 @@ jobs:
         -Dappname="${{ secrets.APP_NAME }}" \
         -Danypoint.platform.client_id=777df98bcd084a75bfe4b973a9e53516 \
         -Danypoint.platform.client_secret=AF10d59Ee8C64EFb85BCc8474b2aA7eD
-    - name: Rollback to previous version
+    - name: Rollback to previous version (Dev)
       if: failure()
       run: |
-        echo "Deployment to dev failed, rolling back..."
-        git checkout feature-branch  
+        echo "Deployment to DEV failed. Rolling back last commit..."
+        git config user.name "saichannel"
+        git config user.email "actions@github.com"
+        git checkout feature-branch
         git reset --hard HEAD~1
         git push origin feature-branch --force
-    - name: Create tag for stable deploy
+
+    - name: Create tag for stable deploy (Dev)
       if: success()
       run: |
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
-        git tag -a "v1.0.${{ secrets.RUN_NUMBER }}" -m "Stable deploy"
+        git tag -a "dev-v1.0.${{ github.run_number }}" -m "Stable deploy to DEV"
         git push origin --tags
+
 
       
          
@@ -99,20 +103,24 @@ jobs:
         -Dappname="${{ secrets.APP_NAME }}" \
         -Danypoint.platform.client_id=b5b72434253f480c8405d9cb8d853fed \
         -Danypoint.platform.client_secret=d7d4Ff82Be8f49949661Ffd3ED535D46
-    - name: Rollback to previous version
+    - name: Rollback to previous version (Dev)
       if: failure()
       run: |
-        echo "Deployment to dev failed, rolling back..."
-        git checkout feature-branch  
+        echo "Deployment to DEV failed. Rolling back last commit..."
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git checkout feature-branch
         git reset --hard HEAD~1
         git push origin feature-branch --force
-    - name: Create tag for stable deploy
+
+    - name: Create tag for stable deploy (Dev)
       if: success()
       run: |
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
-        git tag -a "v1.0.${{ secrets.RUN_NUMBER }}" -m "Stable deploy"
+        git tag -a "dev-v1.0.${{ github.run_number }}" -m "Stable deploy to DEV"
         git push origin --tags
+
   
   # deployprod:
   #   needs: deployuat
