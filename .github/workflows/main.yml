@@ -105,8 +105,8 @@ jobs:
         -Denv="${{ secrets.ENV }}" \
         -Dappname="${{ secrets.APP_NAME }}" \
         -Danypoint.platform.client_id=b5b72434253f480c8405d9cb8d853fed \
-        -Danypoint.platform.client_secret=d7d4Ff82Be8f49949661Ffd3ED535D46 \
-        false
+        -Danypoint.platform.client_secret=d7d4Ff82Be8f49949661Ffd3ED535D46 
+        
         
     - name: Rollback to previous version (UAT)
       if: ${{ failure() }}
