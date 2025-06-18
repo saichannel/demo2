@@ -57,7 +57,9 @@ jobs:
         -Denv="${{ secrets.ENV }}" \
         -Dappname="${{ secrets.APP_NAME }}" \
         -Danypoint.platform.client_id=777df98bcd084a75bfe4b973a9e53516 \
-        -Danypoint.platform.client_secret=AF10d59Ee8C64EFb85BCc8474b2aA7eD
+        -Danypoint.platform.client_secret=AF10d59Ee8C64EFb85BCc8474b2aA7eD \
+        false
+        
         
     - name: Rollback to previous version (Dev)
       if: ${{ failure() }}
@@ -103,7 +105,8 @@ jobs:
         -Denv="${{ secrets.ENV }}" \
         -Dappname="${{ secrets.APP_NAME }}" \
         -Danypoint.platform.client_id=b5b72434253f480c8405d9cb8d853fed \
-        -Danypoint.platform.client_secret=d7d4Ff82Be8f49949661Ffd3ED535D46
+        -Danypoint.platform.client_secret=d7d4Ff82Be8f49949661Ffd3ED535D46 \
+        false
         
     - name: Rollback to previous version (UAT)
       if: ${{ failure() }}
