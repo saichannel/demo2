@@ -1,6 +1,9 @@
 name: Reusable Workflow To Deploy MuleSoft Application 
 on: 
+  push:
+    branches: [ main ]
   workflow_call: 
+  
 jobs: 
   build: 
     runs-on: ubuntu-latest 
