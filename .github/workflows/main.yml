@@ -69,13 +69,14 @@ jobs:
           path: ~/.m2/repository 
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }} 
           restore-keys: ${{ runner.os }}-maven- 
+          
+      # Download previously deployed UAT version (for rollback)
+      - name: Download previous UAT version artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: uat-version
+        continue-on-error: true
 
-      # Download previously deployed UAT version (for rollback) 
-      - name: Download previous UAT version artifact 
-        uses: actions/download-artifact@v4 
-        with: 
-          name: uat-version 
-        continue-on-error: true 
 
       # Read previous version and export to env variable 
       - name: Read previous version from file 
