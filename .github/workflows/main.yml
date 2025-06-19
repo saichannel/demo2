@@ -28,6 +28,7 @@ jobs:
           mvn deploy --settings .settings/org.eclipse.core.resources.prefs -DskipMunitTests \ 
           -Danypoint.username="${{ secrets.USER }}" \ 
           -Danypoint.password="${{ secrets.PASS }}" 
+          
 
   deploydev: 
     needs: build 
@@ -52,7 +53,8 @@ jobs:
           -Denv="${{ secrets.ENV }}" \ 
           -Dappname="${{ secrets.APP_NAME }}" \ 
           -Danypoint.platform.client_id="${{ secrets.ENV_CLIENT_ID }}" \ 
-          -Danypoint.platform.client_secret="${{ secrets.ENV_CLIENT_SECRET }}" 
+          -Danypoint.platform.client_secret="${{ secrets.ENV_CLIENT_SECRET }}" \
+          -Dmule.redeploy=true
 
   deployuat: 
     needs: deploydev 
@@ -98,7 +100,8 @@ jobs:
             -Denv="${{ secrets.ENV }}" \ 
             -Dappname="${{ secrets.APP_NAME }}" \ 
             -Danypoint.platform.client_id="${{ secrets.ENV_CLIENT_ID }}" \ 
-            -Danypoint.platform.client_secret="${{ secrets.ENV_CLIENT_SECRET }}" 
+            -Danypoint.platform.client_secret="${{ secrets.ENV_CLIENT_SECRET }}" \
+            -Dmule.redeploy=true
       # If UAT deploy fails, rollback using the version saved in artifact 
       - name: Rollback to Previous UAT Version 
         if: steps.uat_deploy.outcome == 'failure' 
