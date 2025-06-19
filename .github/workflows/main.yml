@@ -72,7 +72,7 @@ jobs:
       - name: Download previous UAT version artifact 
         uses: actions/download-artifact@v4 
         with: 
-          name: uat-version 
+          name: health_check-uat 
         continue-on-error: true 
 
       # Read previous version and export to env variable 
@@ -91,7 +91,6 @@ jobs:
         run: | 
           echo "Trying to deploy new version to UAT..." 
           # Uncomment this to simulate UAT failure and trigger rollback 
-          exit 1 
           mvn deploy --settings .settings/org.eclipse.core.resources.prefs -DskipMunitTests -DmuleDeploy \ 
             -Danypoint.username="${{ secrets.USER }}" \ 
             -Danypoint.password="${{ secrets.PASS }}" \ 
