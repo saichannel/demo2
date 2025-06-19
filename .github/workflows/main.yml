@@ -82,7 +82,7 @@ jobs:
             VERSION=$(cat deployed_version.txt) 
             echo "VERSION=$VERSION" >> $GITHUB_ENV 
           else 
-            echo "VERSION=1.0.1" >> $GITHUB_ENV 
+            echo "VERSION=1.0.0" >> $GITHUB_ENV 
           fi 
       # Deploy new version to UAT (simulate failure optionally) 
       - name: Try Deploy to UAT 
