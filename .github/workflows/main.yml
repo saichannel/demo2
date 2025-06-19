@@ -72,7 +72,7 @@ jobs:
       - name: Download previous UAT version artifact 
         uses: actions/download-artifact@v4 
         with: 
-          name: health_check-uat 
+          name: uat-version 
         continue-on-error: true 
 
       # Read previous version and export to env variable 
